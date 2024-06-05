@@ -16,6 +16,15 @@
                 <label for="title" class="form-label">title</label>
                 <textarea class="form-control" name="title" id="title" rows="3" placeholder="title"> {{old('description')}}</textarea>
             </div>
+            <div class="mb-5">
+                    <label for="type_id">Type</label>
+                    <select name="type_id" id="type_id" name="type_id">
+                        <option value="">-- Select Type --</option>
+                        @foreach($types as $type)
+                        <option @selected($type->id == old('type_id')) value="{{$type->id}}">{{$type->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
 
            
             

@@ -19,9 +19,6 @@
                 <textarea class="form-control" name="title" id="title" rows="3" placeholder="title"> {{old('title',$project->title)}}</textarea>
             </div>
 
-           
-            
-            
 
             <button class="btn btn-primary">Edit</button>
             <a class="btn btn-secondary" href="{{ route('admin.projects.index') }}">Back</a>
