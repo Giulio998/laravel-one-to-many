@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <form action="{{ route('admin.types.store') }}" method="POST" class="my-5">
+        <form action="{{ route('admin.types.store',$type) }}" method="POST" class="my-5">
             @csrf
             @method('PUT')
 
