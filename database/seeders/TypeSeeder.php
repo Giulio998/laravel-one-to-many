@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Type;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Faker\Generator as Faker;
+use Illuminate\Support\Facades\DB;
 
 class TypeSeeder extends Seeder
 {
@@ -14,6 +14,7 @@ class TypeSeeder extends Seeder
      */
     public function run(): void
     {
+        
         $types = ['type1', 'type2', 'type3', 'type4'];
         foreach($types as $type){
             $new_type = new Type();

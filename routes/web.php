@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\TypeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +32,7 @@ Route::middleware(['auth','verified'])
     })->name('dashboard');
 
     Route::resource('projects', ProjectController::class);
+    Route::resource('types', TypeController::class);
 });
 
 

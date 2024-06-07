@@ -11,10 +11,11 @@
         <p><strong>Description:</strong> {{$project->content}}</p>
         <p><strong>Type:</strong> {{$project->type->name ?? 'None'}}</p>
         <h3>Related Projects:</h3>
-            @foreach($related_projects as $related_project)
+            @foreach($project->type->projects as $related_project)
             <p><a href="{{ route('admin.projects.show', $related_project)}}">{{$related_project->title}}</a></p>
             @endforeach
         <a class="btn btn-secondary" href="{{ route('admin.projects.index') }}">Back</a>
+        <a href="{{ route('admin.projects.edit', $project)}}" class="btn btn-primary">Edit</a>
     </div>
 </div>
 </div>

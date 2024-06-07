@@ -19,6 +19,15 @@
                 <textarea class="form-control" name="title" id="title" rows="3" placeholder="title"> {{old('title',$project->title)}}</textarea>
             </div>
 
+            <div class="mb-5">
+                    <label for="type_id">Type</label>
+                    <select name="type_id" id="type_id" name="type_id">
+                        <option value="">-- Select Type --</option>
+                        @foreach($types as $type)
+                        <option @selected($type->id == old('type_id', $project->type_id)) value="{{$type->id}}">{{$type->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
 
             <button class="btn btn-primary">Edit</button>
             <a class="btn btn-secondary" href="{{ route('admin.projects.index') }}">Back</a>

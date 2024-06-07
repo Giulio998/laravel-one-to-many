@@ -7,6 +7,8 @@ use App\Models\Type;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Http\Requests\UpdateTypeRequest;
+use App\Http\Requests\StoreProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -35,15 +37,30 @@ class ProjectController extends Controller
     {
         $request->validate([
             'title'=>'required|max:150|string',
-            'content'=>'nullable|string'
+            'content'=>'nullable|string',
+            'type_id'=>'required'
         ]);
 
-        $form_data = $request->all();
-        $slug = Str::slug($form_data['title']);
-        $form_data['slug'] = $slug;
-        $new_project = Project::create($form_data);
+        $form_data= $request->all();
 
-        return to_route('admin.projects.index', $new_project);
+        $base_slug = Str::slug($form_data['title']);
+        $slug = $base_slug;
+        $n = 0;
+
+        do {
+            // SELECT * FROM `posts` WHERE `slug` = ?
+            $find = Project::where('slug', $slug)->first(); 
+            if ($find !== null) {
+                $n++;
+                $slug = $base_slug . '-' . $n;
+            }
+        } while ($find !== null);
+
+        $form_data['slug'] = $slug;
+
+
+        $new_project = Project::create($form_data);
+        return to_route('admin.projects.show', $new_project);
     }
 
     /**
@@ -51,9 +68,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $related_projects = Project::where('type_id',$project->type_id)->get();
+       
 
-        return view('admin.projects.show',compact('project','related_projects'));
+        return view('admin.projects.show',compact('project'));
     }
 
     /**
@@ -61,25 +78,32 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $types = Type::all();
+        return view('admin.projects.edit', compact('project', 'types'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateTypeRequest $request, Project $project)
     {
-        $request->validate([
-            'title'=>'required|max:150|string',
-            'content'=>'nullable|string'
-        ]);
         $form_data = $request->all();
+        $base_slug = Str::slug($form_data['title']);
+        $slug = $base_slug;
+        $n = 0;
 
-        $project->fill($form_data);
+        do {
+            // SELECT * FROM `posts` WHERE `slug` = ?
+            $find = Project::where('slug', $slug)->first(); 
+            if ($find !== null) {
+                $n++;
+                $slug = $base_slug . '-' . $n;
+            }
+        } while ($find !== null);
+        $form_data['slug'] = $slug;
+        $project->update($form_data);  
 
-        $project->save();
-
-        return to_route('admin.projects.index', compact('project')) ;
+        return to_route('admin.projects.show', $project); 
     }
 
     /**
